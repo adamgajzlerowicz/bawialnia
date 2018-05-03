@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { children, Child } from './children';
+import { children, Child } from '../app/reducers/children';
 
 describe('children reducer', () => {
   const child = new Child({

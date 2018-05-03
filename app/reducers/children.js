@@ -3,10 +3,11 @@
 import * as immutable from 'immutable';
 import type { RecordFactory, RecordOf } from 'immutable';
 
-type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD';
+type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'RESET_CHILDREN';
 
 const ADD_CHILD:ActionType = 'ADD_CHILD';
 const UPDATE_CHILD:ActionType = 'UPDATE_CHILD';
+const RESET_CHILDREN: ActionType = 'RESET_CHILDREN';
 
 type ChildType = {
     +id: string,
@@ -35,6 +36,8 @@ function children(state: ChildrenReducerType = immutable.Map(), action: actionTy
       // const id = UUID.v4();
     case UPDATE_CHILD:
       return state.set(action.payload.get('id'), action.payload);
+    case RESET_CHILDREN:
+      return immutable.Map();
     default:
       return state;
   }
