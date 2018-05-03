@@ -1,29 +1,34 @@
 // @flow
 
-const ADD_CHILD = 'ADD_CHILD';
-const UPDATE_CHILD = 'UPDATE_CHILD';
+import { Map, Record } from 'immutable';
 
-type ChildType = {
-    +id: ?string,
+type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD';
+
+const ADD_CHILD:ActionType = 'ADD_CHILD';
+const UPDATE_CHILD:ActionType = 'UPDATE_CHILD';
+
+type ChildType = Record<{
+    +id: string,
     +name: string,
     +entryTime: string,
     leaveTime: string
-};
+}>;
 
-type ChildrenReducerType = { [string]: ChildType };
+const Child:ChildType = Record({
+  id: '', name: '', entryTime: '', leaveTime: ''
+});
+
+type ChildrenReducerType = Map<Record<ChildType>>;
 
 type actionType = {
-    +type: string,
+    +type: ActionType,
     +payload: ChildType
 };
 
-function children(state: ChildrenReducerType = {}, action: actionType) {
+function children(state: ChildrenReducerType = Map(), action: actionType) {
   switch (action.type) {
     case ADD_CHILD:
-      return {
-        ...state,
-        [action.payload.id]: Object.assign({}, action.payload, { id: action.payload.id })
-      };
+      return state.set(action.payload.get('id'), action.payload);
       // const id = UUID.v4();
     case UPDATE_CHILD:
       return {
@@ -41,7 +46,7 @@ const updateChild = (data: ChildType) => ({ type: UPDATE_CHILD, payload: data })
 const selectChildren = state => state.children;
 
 export {
-  children, addChild, updateChild, selectChildren
+  children, addChild, updateChild, selectChildren, Child
 };
 
 export type {
