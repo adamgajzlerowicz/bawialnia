@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 type Props = {
-  children: *
+  children: Element<*>
 };
 
 export default class App extends React.Component<Props> {
