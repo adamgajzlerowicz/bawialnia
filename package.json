@@ -185,12 +185,13 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
+    "antd": "^3.4.5",
+    "babel-plugin-import": "^1.7.0",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
     "immutable": "4.0.0-rc.9",
-    "office-ui-fabric-react": "^5.95.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0-beta.13",

@@ -6,7 +6,6 @@ import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 
 import rootReducer from '../reducers';
-import type { counterStateType } from '../reducers/counter';
 
 
 const history = createHashHistory();

@@ -6,7 +6,6 @@ import { routerMiddleware } from 'react-router-redux';
 import persistState from 'redux-localstorage';
 
 import rootReducer from '../reducers';
-import type { counterStateType } from '../reducers/counter';
 
 const history = createBrowserHistory();
 const router = routerMiddleware(history);
