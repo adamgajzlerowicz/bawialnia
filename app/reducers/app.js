@@ -3,7 +3,7 @@
 import * as immutable from 'immutable';
 import type { RecordFactory, RecordOf } from 'immutable';
 
-type ActionType = 'SET_MAX_CHILDREN' | 'SET_RATE' | 'SET_FIRST_HOUR_RATE';
+type ActionType = 'SET_MAX_CHILDREN' | 'SET_RATE' | 'SET_FIRST_HOUR_RATE' | *;
 
 const SET_MAX_CHILDREN:ActionType = 'SET_MAX_CHILDREN';
 const SET_RATE:ActionType = 'SET_RATE';
@@ -15,7 +15,7 @@ type AppType = {
     rate: number
 };
 
-type AppRecordType = RecordOf<AppType>;
+type AppRecordType = RecordOf<AppType> | void;
 
 const App:RecordFactory<AppType> = immutable.Record({
   maxChildren: 15, firstHourRate: 10.00, rate: 8
@@ -24,7 +24,7 @@ const App:RecordFactory<AppType> = immutable.Record({
 
 type actionType = {
     +type: ActionType,
-    +payload: number
+    +payload?: number | *
 };
 
 function app(state: AppRecordType = App(), action: actionType) {

@@ -3,7 +3,7 @@
 import * as immutable from 'immutable';
 import type { RecordFactory, RecordOf } from 'immutable';
 
-type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'RESET_CHILDREN';
+type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'RESET_CHILDREN' | *;
 
 const ADD_CHILD:ActionType = 'ADD_CHILD';
 const UPDATE_CHILD:ActionType = 'UPDATE_CHILD';
@@ -26,10 +26,12 @@ type ChildrenReducerType = immutable.Map<string, ChildRecordType>;
 
 type actionType = {
     +type: ActionType,
-    +payload: ChildRecordType
+    +payload?: ChildRecordType | *
 };
 
-function children(state: ChildrenReducerType = immutable.Map(), action: actionType) {
+const defaultState: ChildrenReducerType = immutable.Map();
+
+function children(state: ChildrenReducerType = defaultState, action: actionType) {
   switch (action.type) {
     case ADD_CHILD:
       return state.set(action.payload.get('id'), action.payload);
@@ -37,7 +39,7 @@ function children(state: ChildrenReducerType = immutable.Map(), action: actionTy
     case UPDATE_CHILD:
       return state.set(action.payload.get('id'), action.payload);
     case RESET_CHILDREN:
-      return immutable.Map();
+      return defaultState;
     default:
       return state;
   }

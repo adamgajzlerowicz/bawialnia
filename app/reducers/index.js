@@ -2,10 +2,12 @@
 
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
-import counter from './counter';
+import { app } from './app';
+import { children } from './children';
 
 const rootReducer = combineReducers({
-  counter,
+  app,
+  children,
   router,
 });
 
