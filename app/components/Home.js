@@ -95,7 +95,7 @@ class App extends Component<Props, State> {
                 />
               </span>
               <div>
-                <span>Ustawienia: </span>
+                <span>Pokaż ustawienia: </span>
                 <Switch
                   size="default"
                   checked={showSettings}
