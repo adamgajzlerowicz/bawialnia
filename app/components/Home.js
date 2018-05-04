@@ -11,7 +11,7 @@ import type { AppType } from '../reducers/app';
 import * as app from '../reducers/app';
 import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
-import { calculate } from '../helpers/calculator';
+import { calculate, checkValue } from '../helpers/calculator';
 
 import styles from './Home.css';
 
@@ -24,7 +24,10 @@ type Props = AppType & {
   setFormValue: string => void,
   firstHourRate: number,
   rate: number,
-  maxChildren: number
+  maxChildren: number,
+  setRate: number => void,
+  setFirstHourRate: number => void,
+  setMaxChildren: number => void
 };
 
 type State = {
@@ -32,6 +35,7 @@ type State = {
 };
 
 const sort = (a, b) => !(a.entryTime - b.entryTime);
+
 
 class App extends Component<Props, State> {
   props: Props;
@@ -41,7 +45,7 @@ class App extends Component<Props, State> {
 
   componentDidMount() {
     this.props.setFormValue('');
-    this.props.setShowSettings(false);
+    // this.props.setShowSettings(false);
     setInterval(() => {
       this.setState({ timer: this.state.timer + 1 });
     }, 1000 * 60);
@@ -50,7 +54,7 @@ class App extends Component<Props, State> {
   render() {
     const {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings
-      , firstHourRate, rate, maxChildren
+      , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate
     } = this.props;
     return (
       <div>
@@ -98,10 +102,35 @@ class App extends Component<Props, State> {
             </div>
             {showSettings && (
               <div className={styles.config}>
-                <p className={styles.configItem}>limit dzieci: <Input className={styles.configInputItem} size="small" value={maxChildren} /></p>
-                <p className={styles.configItem}>stawka <Input className={styles.configInputItem} size="small" value={rate} /></p>
-                <p className={styles.configItem}>startowa stawka <Input className={styles.configInputItem} size="small" value={firstHourRate} /></p>
-
+                <p className={styles.configItem} >
+                  Limit dzieci:
+                  <Input
+                    className={styles.configInputItem}
+                    size="small"
+                    value={maxChildren}
+                    onChange={({ target: { value } }: *) =>
+                      setMaxChildren(checkValue(value, maxChildren))
+                    }
+                  />
+                </p>
+                <p className={styles.configItem}>
+                  Stawka
+                  <Input
+                    className={styles.configInputItem}
+                    size="small"
+                    defaultValue={rate}
+                    onChange={setRate}
+                  />
+                </p>
+                <p className={styles.configItem}>
+                  Startowa stawka
+                  <Input
+                    className={styles.configInputItem}
+                    size="small"
+                    defaultValue={firstHourRate}
+                    onChange={setFirstHourRate}
+                  />
+                </p>
               </div>
             )}
           </div>
@@ -129,6 +158,9 @@ const mapDispatch = (dispatch: Dispatch) => ({
     })));
   },
   setShowSettings: (val: boolean) => dispatch(app.setShowSettings(val)),
+  setRate: (rate: number) => dispatch(app.setRate(rate)),
+  setFirstHourRate: (rate: number) => dispatch(app.setFirstHourRate(rate)),
+  setMaxChildren: (children: number) => dispatch(app.setMaxChildren(children)),
   updateChild: (data: ChildRecordType) => {
     dispatch(app.setFormValue(''));
     // dispatch(updateChild(new Child({

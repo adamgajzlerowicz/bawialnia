@@ -13,13 +13,14 @@ type ChildType = {
     id: string,
     name: string,
     entryTime: string,
-    leaveTime: ?string
+    leaveTime: ?string,
+    cost: number
 };
 
 type ChildRecordType = RecordOf<ChildType>;
 
 const Child:RecordFactory<ChildType> = immutable.Record({
-  id: '', name: '', entryTime: '', leaveTime: null
+  id: '', name: '', entryTime: '', leaveTime: null, cost: 0
 });
 
 type ChildrenReducerType = immutable.Map<string, ChildRecordType>;
