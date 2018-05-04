@@ -7,7 +7,7 @@ import type { Dispatch } from 'redux';
 
 
 import type { AppType } from '../reducers/app';
-import { selectFormValue, setFormValue } from '../reducers/app';
+import { selectFormValue, selectShowSettings, setFormValue, setShowSettings } from '../reducers/app';
 import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
 
@@ -29,11 +29,12 @@ class App extends Component<Props> {
 
   componentDidMount() {
     this.props.setFormValue('');
+    this.props.setShowSettings(false);
   }
 
   render() {
     const {
-      children, formValue, setFormValue, addChild
+      children, formValue, setFormValue, addChild, setShowSettings, showSettings
     } = this.props;
     return (
       <div>
@@ -54,16 +55,13 @@ class App extends Component<Props> {
           <div className={styles.right}>
             <span>Ustawienia</span>
             <Switch
-              checked
-              onChange={() => {
-            }}
+              checked={showSettings}
+              onChange={() => setShowSettings(!showSettings)}
             />
           </div>
 
           <div className={styles.innerContainer}>
             <div className={styles.list}>
-
-
               <List
                 locale={{ emptyText: 'Brak danych' }}
                 size="large"
@@ -80,7 +78,7 @@ class App extends Component<Props> {
                 )}
               />
             </div>
-            {false && <div className={styles.config}>
+            {showSettings && <div className={styles.config}>
               dupa
             </div>}
           </div>
@@ -92,7 +90,8 @@ class App extends Component<Props> {
 
 const mapState = (state: *) => ({
   children: children.selectChildren(state),
-  formValue: selectFormValue(state)
+  formValue: selectFormValue(state),
+  showSettings: selectShowSettings(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -103,6 +102,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
       id: UUID.v4(), name: data, entryTime: 'now', leaveTime: 'later'
     })));
   },
+  setShowSettings: (val: boolean) => dispatch(setShowSettings(val)),
   updateChild: (data: ChildRecordType) => {
     dispatch(setFormValue(''));
     // dispatch(updateChild(new Child({
