@@ -30,3 +30,14 @@
   margin-left: 20px;
   margin-top: 55px;
 }
+
+.item:hover {
+  background-color: #e8eef7;
+}
+
+.right {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+  margin-bottom: 10px;
+}
