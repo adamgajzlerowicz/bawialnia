@@ -50,7 +50,7 @@ class App extends Component<Props> {
             }}
             value={formValue}
             enterButton="Dodaj"
-            onSearch={() => addChild(formValue)}
+            onSearch={() => formValue && addChild(formValue)}
           />
           <div className={styles.right}>
             <span>Ustawienia</span>
