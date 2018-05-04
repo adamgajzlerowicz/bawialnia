@@ -17,7 +17,7 @@ type AppType = {
   formValue: string
 };
 
-type AppRecordType = RecordOf<AppType> | void;
+// type AppRecordType = RecordOf<AppType>;
 
 const App: RecordFactory<AppType> = immutable.Record({
   maxChildren: 15, firstHourRate: 10.00, rate: 8, formValue: ''
@@ -26,7 +26,7 @@ const App: RecordFactory<AppType> = immutable.Record({
 
 type actionType = {
   +type: ActionType,
-  +payload?: number | string
+  +payload: *
 };
 
 function app(planeState: * = {}, action: actionType) {

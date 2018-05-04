@@ -7,7 +7,8 @@ import type { Dispatch } from 'redux';
 
 
 import { selectFormValue, setFormValue } from '../reducers/app';
-import { Child, selectChildren, addChild, updateChild } from '../reducers/children';
+// import { Child, selectChildren, addChild } from '../reducers/children';
+import * as children from '../reducers/children';
 import type { ChildRecordType, ChildrenReducerType } from '../reducers/children';
 import type { AppType } from '../reducers/app';
 
@@ -16,9 +17,10 @@ import styles from './Home.css';
 const { Search } = Input;
 
 type Props = AppType & {
-  addChild: ChildRecordType => void,
+  addChild: string => void,
   updateChild: ChildRecordType => void,
-  children: ChildrenReducerType
+  children: ChildrenReducerType,
+  setFormValue: string => void
 };
 
 
@@ -42,7 +44,7 @@ class App extends Component<Props> {
     const {
       children, formValue, setFormValue, addChild
     } = this.props;
-    console.log(children);
+    console.log(addChild);
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -71,7 +73,7 @@ class App extends Component<Props> {
 }
 
 const mapState = (state: *) => ({
-  children: selectChildren(state),
+  children: children.selectChildren(state),
   formValue: selectFormValue(state)
 });
 
@@ -79,7 +81,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   setFormValue: (data) => dispatch(setFormValue(data)),
   addChild: (data: string) => {
     dispatch(setFormValue(''));
-    dispatch(addChild(new Child({
+    dispatch(children.addChild(new children.Child({
       id: UUID.v4(), name: data, entryTime: 'now', leaveTime: 'later'
     })));
   },

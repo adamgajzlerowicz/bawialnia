@@ -10,9 +10,9 @@ const UPDATE_CHILD:ActionType = 'UPDATE_CHILD';
 const RESET_CHILDREN: ActionType = 'RESET_CHILDREN';
 
 type ChildType = {
-    +id: string,
-    +name: string,
-    +entryTime: string,
+    id: string,
+    name: string,
+    entryTime: string,
     leaveTime: string
 };
 
@@ -26,7 +26,7 @@ type ChildrenReducerType = immutable.Map<string, ChildRecordType>;
 
 type actionType = {
     +type: ActionType,
-    +payload?: ChildRecordType
+    +payload: ChildRecordType
 };
 
 const defaultState: ChildrenReducerType = immutable.Map();
@@ -45,7 +45,7 @@ function children(plainState: * = {}, action: actionType) {
   }
 }
 
-const addChild = (data: ChildRecordType) => ({ type: ADD_CHILD, payload: data });
+const addChild = (data: *) => ({ type: ADD_CHILD, payload: data });
 const updateChild = (data: ChildRecordType) => ({ type: UPDATE_CHILD, payload: data });
 
 const selectChildren = (state: *) => state.children;
