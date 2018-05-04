@@ -4,10 +4,10 @@ import { Input, List, Switch } from 'antd';
 import UUID from 'uuid';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-
+import moment from 'moment';
 
 import type { AppType } from '../reducers/app';
-import { selectFormValue, selectShowSettings, setFormValue, setShowSettings } from '../reducers/app';
+import * as app from '../reducers/app';
 import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
 
@@ -19,7 +19,10 @@ type Props = AppType & {
   addChild: string => void,
   updateChild: ChildRecordType => void,
   children: ChildrenReducerType,
-  setFormValue: string => void
+  setFormValue: string => void,
+  firstHourRate: number,
+  rate: number,
+  maxChildren: number
 };
 
 const sort = (a, b) => !(a.entryTime - b.entryTime);
@@ -35,6 +38,7 @@ class App extends Component<Props> {
   render() {
     const {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings
+      , firstHourRate, rate, maxChildren
     } = this.props;
     return (
       <div>
@@ -53,11 +57,13 @@ class App extends Component<Props> {
             onSearch={() => formValue && addChild(formValue)}
           />
           <div className={styles.right}>
-            <span>Ustawienia</span>
-            <Switch
-              checked={showSettings}
-              onChange={() => setShowSettings(!showSettings)}
-            />
+            <div className={styles.rightInner}>
+              <span>Ustawienia</span>
+              <Switch
+                checked={showSettings}
+                onChange={() => setShowSettings(!showSettings)}
+              />
+            </div>
           </div>
 
           <div className={styles.innerContainer}>
@@ -72,15 +78,20 @@ class App extends Component<Props> {
                   <List.Item actions={[<a>Zakoncz pobyt</a>]} className={styles.item}>
                     <List.Item.Meta
                       title={<a href="https://ant.design">{item.name}</a>}
-                      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                      description={item.entryTime}
                     />
                   </List.Item>
                 )}
               />
             </div>
-            {showSettings && <div className={styles.config}>
-              dupa
-            </div>}
+            {showSettings && (
+              <div className={styles.config}>
+                <p className={styles.configItem}>limit dzieci: <Input className={styles.configInputItem} size="small" value={maxChildren} /></p>
+                <p className={styles.configItem}>stawka <Input className={styles.configInputItem} size="small" value={rate} /></p>
+                <p className={styles.configItem}>startowa stawka <Input className={styles.configInputItem} size="small" value={firstHourRate} /></p>
+
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -90,21 +101,24 @@ class App extends Component<Props> {
 
 const mapState = (state: *) => ({
   children: children.selectChildren(state),
-  formValue: selectFormValue(state),
-  showSettings: selectShowSettings(state)
+  maxChildren: app.selectMaxChildren(state),
+  rate: app.selectRate(state),
+  firstHourRate: app.selectFirstHourRate(state),
+  formValue: app.selectFormValue(state),
+  showSettings: app.selectShowSettings(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  setFormValue: (data) => dispatch(setFormValue(data)),
+  setFormValue: (data) => dispatch(app.setFormValue(data)),
   addChild: (data: string) => {
-    dispatch(setFormValue(''));
+    dispatch(app.setFormValue(''));
     dispatch(children.addChild(new children.Child({
-      id: UUID.v4(), name: data, entryTime: 'now', leaveTime: 'later'
+      id: UUID.v4(), name: data, entryTime: moment(), leaveTime: null
     })));
   },
-  setShowSettings: (val: boolean) => dispatch(setShowSettings(val)),
+  setShowSettings: (val: boolean) => dispatch(app.setShowSettings(val)),
   updateChild: (data: ChildRecordType) => {
-    dispatch(setFormValue(''));
+    dispatch(app.setFormValue(''));
     // dispatch(updateChild(new Child({
     //   id: UUID.v4(), name: data, entryTime: 'now', leaveTime: 'later'
     // })));

@@ -41,3 +41,9 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+.ant-spin-container, .ant-spin-nested-loading{
+  overflow: auto;
+}
+.ant-list-bordered {
+  display: flex;
+}
