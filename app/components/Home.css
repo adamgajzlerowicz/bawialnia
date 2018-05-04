@@ -12,10 +12,21 @@
   font-family: 'Pacifico', cursive;
 }
 
-.container a {
-  font-size: 1.4rem;
-}
 
 .add {
   margin-bottom: 20px !important;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.list {
+  flex: 1;
+}
+
+.config {
+  margin-left: 20px;
+  margin-top: 55px;
 }

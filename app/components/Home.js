@@ -38,8 +38,8 @@ class App extends Component<Props> {
       <div>
         <div className={styles.container} data-tid="container">
           <h2>Bawialnia</h2>
-          <div className="inner-container">
-            <div className="list">
+          <div className={styles.innerContainer}>
+            <div className={styles.list} >
 
               <Search
                 size="large"
@@ -58,13 +58,22 @@ class App extends Component<Props> {
                 locale={{ emptyText: 'Brak danych' }}
                 size="large"
                 bordered
+                className="demo-loadmore-list"
                 dataSource={Object.values(children.toJS()).sort((a, b) => !(a.entryTime - b.entryTime))}
-                renderItem={(item: ChildType) => (<List.Item>{item.name}</List.Item>)}
+                renderItem={(item: ChildType) => (
+                  <List.Item actions={[<a>edit</a>, <a>more</a>]}>
+                    <List.Item.Meta
+                      title={<a href="https://ant.design">{item.name}</a>}
+                      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                    />
+                    <div>content</div>
+                  </List.Item>
+                )}
               />
             </div>
-            <div className="config">
+            {false && <div className={styles.config}>
            dupa
-            </div>
+            </div>}
           </div>
         </div>
       </div>
