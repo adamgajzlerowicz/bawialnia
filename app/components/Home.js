@@ -35,7 +35,19 @@ type State = {
   timer: number
 };
 
-const sort = (a, b) => !(a.entryTime - b.entryTime);
+const sort = (a, b) => {
+  if (a.leaveTime && !b.leaveTime) {
+    return true;
+  }
+  if (!a.leaveTime && b.leaveTime) {
+    return false;
+  }
+  if (a.leaveTime && b.leaveTime) {
+    return a.leaveTime < b.leaveTime;
+  }
+
+  return a.entryTime < b.entryTime;
+};
 
 
 class App extends Component<Props, State> {
@@ -109,7 +121,8 @@ class App extends Component<Props, State> {
                           <a
                             onClick={() => {
                                 updateChild(Object.assign({}, item, {
-                                  leaveTime: moment().toISOString()
+                                  leaveTime: moment().toISOString(),
+                                  cost: calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))
                         }));
                       }}
                           >
@@ -125,7 +138,8 @@ class App extends Component<Props, State> {
                         description={
                           <div >
                             <span>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</span>
-                            <span>{' '} Koszt: {calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))} zł</span>
+                            {!item.leaveTime && <span>{' '} Koszt: {calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))} zł</span>}
+                            {item.leaveTime && <span>{' '} Zapłacono: {item.cost} zł</span>}
                           </div>
                         }
                       />
@@ -191,7 +205,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   addChild: (data: string) => {
     dispatch(app.setFormValue(''));
     dispatch(children.addChild(new children.Child({
-      id: UUID.v4(), name: data, entryTime: moment(), leaveTime: null
+      id: UUID.v4(), name: data, entryTime: moment().toISOString(), leaveTime: null
     })));
   },
   setShowSettings: (val: boolean) => dispatch(app.setShowSettings(val)),

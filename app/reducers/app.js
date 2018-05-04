@@ -20,7 +20,7 @@ type AppType = {
 };
 
 const App: RecordFactory<AppType> = immutable.Record({
-  maxChildren: 15, firstHourRate: 10.00, rate: 8, formValue: '', showSettings: 'false'
+  maxChildren: 15, firstHourRate: 10.00, rate: 8, formValue: '', showSettings: false
 });
 
 
