@@ -11,7 +11,7 @@ import type { AppType } from '../reducers/app';
 import * as app from '../reducers/app';
 import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
-import { calculate, checkValue } from '../helpers/calculator';
+import { calculate, checkValue, calculateFullness } from '../helpers/calculator';
 
 import styles from './Home.css';
 
@@ -76,12 +76,12 @@ class App extends Component<Props, State> {
           <div className={styles.right}>
             <div className={styles.rightInner}>
               <span>
-                <Badge status="success" text={`${children.size} dzieci`} />
+                <Badge status={calculateFullness(children.size, maxChildren)} text={`${children.size} dzieci`} />
               </span>
               <div>
                 <span>Ustawienia: </span>
                 <Switch
-                  size="medium"
+                  size="default"
                   checked={showSettings}
                   onChange={() => setShowSettings(!showSettings)}
                 />

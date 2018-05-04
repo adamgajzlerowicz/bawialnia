@@ -28,22 +28,16 @@ const checkValue = (testValue: *, currentValue: number): number => {
 
 const calculateFullness = (current, max) => {
   if (current >= max) {
-    return 'Error';
+    return 'error';
   }
   const eightyPercent = max * 80 / 100;
   if (current > eightyPercent) {
-    return 'Warning';
+    return 'warning';
   }
-  return 'Processing';
+  return 'processing';
 };
 
 export {
   calculate, checkValue, calculateFullness
 };
 
-/*
-100% = max
-80% = current
-
-
- */
