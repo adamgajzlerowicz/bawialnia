@@ -56,6 +56,12 @@
   text-align: right;
 }
 .configItem {
- margin: 0;
+  margin: 0;
   font-size: 12px;
+}
+
+.current{}
+
+.past{
+  color: #e8eef7;
 }

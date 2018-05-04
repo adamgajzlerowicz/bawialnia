@@ -27,7 +27,8 @@ type Props = AppType & {
   maxChildren: number,
   setRate: number => void,
   setFirstHourRate: number => void,
-  setMaxChildren: number => void
+  setMaxChildren: number => void,
+  updateChild: ChildType => void
 };
 
 type State = {
@@ -54,9 +55,8 @@ class App extends Component<Props, State> {
   render() {
     const {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings
-      , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate
+      , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate, updateChild
     } = this.props;
-    console.log(children);
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -97,16 +97,32 @@ class App extends Component<Props, State> {
                 bordered
                 className="demo-loadmore-list"
                 dataSource={Object.values(children.toJS()).sort(sort)}
-                renderItem={(item: ChildType) => (
-                  <List.Item actions={[<a>Zakoncz pobyt</a>]} className={styles.item}>
-                    <List.Item.Meta
-                      title={<a href="https://ant.design">{item.name}</a>}
-                      description={
-                        <div>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</div>
-                      }
-                    />
-                  </List.Item>
-                )}
+                renderItem={(item: ChildType) =>
+                  (
+                    <List.Item
+                      actions={[
+                        !item.leaveTime && <a onClick={() => {
+                        updateChild(Object.assign({}, item, {
+                          leaveTime: moment().toISOString()
+                        }));
+                      }}
+                        >
+                          Zakoncz pobyt
+                        </a>]}
+                      className={styles.item}
+                    >
+                      <List.Item.Meta
+                        className={item.leaveTime ? 'past' : 'current'}
+                        title={<a href="https://ant.design">{item.name}</a>}
+                        description={
+                          <div >
+                            <span>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</span>
+                            <span>{' '} Koszt: {calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))} zł</span>
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
               />
             </div>
             {showSettings && (
@@ -174,11 +190,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
   setRate: (rate: number) => dispatch(app.setRate(rate)),
   setFirstHourRate: (rate: number) => dispatch(app.setFirstHourRate(rate)),
   setMaxChildren: (children: number) => dispatch(app.setMaxChildren(children)),
-  updateChild: (data: ChildRecordType) => {
-    dispatch(app.setFormValue(''));
-    // dispatch(updateChild(new Child({
-    //   id: UUID.v4(), name: data, entryTime: 'now', leaveTime: 'later'
-    // })));
+  updateChild: (data: ChildType) => {
+    dispatch(children.updateChild(new children.Child(data)));
   }
 });
 

@@ -52,3 +52,6 @@ a:hover {
 .ant-spin-nested-loading {
   width: 100%;
 }
+.ant-list-item-meta.past *{
+  color: #e8e8e8 !important;
+}
