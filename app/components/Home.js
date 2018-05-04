@@ -9,7 +9,7 @@ import type { Dispatch } from 'redux';
 import { selectFormValue, setFormValue } from '../reducers/app';
 // import { Child, selectChildren, addChild } from '../reducers/children';
 import * as children from '../reducers/children';
-import type { ChildRecordType, ChildrenReducerType } from '../reducers/children';
+import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import type { AppType } from '../reducers/app';
 
 import styles from './Home.css';
@@ -23,16 +23,6 @@ type Props = AppType & {
   setFormValue: string => void
 };
 
-
-const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
-
-
 class App extends Component<Props> {
   props: Props;
 
@@ -44,28 +34,38 @@ class App extends Component<Props> {
     const {
       children, formValue, setFormValue, addChild
     } = this.props;
-    console.log(addChild);
     return (
       <div>
         <div className={styles.container} data-tid="container">
           <h2>Bawialnia</h2>
-          <Search
-            placeholder="Dodaj"
-            onChange={(e) => {
+          <div className="inner-container">
+            <div className="list">
+
+              <Search
+                size="large"
+                placeholder="Dodaj"
+                className={styles.add}
+                onChange={(e) => {
               e.preventDefault();
               return setFormValue(e.target.value);
             }}
-            value={formValue}
-            enterButton="Dodaj"
-            onSearch={() => addChild(formValue)}
-          />
+                value={formValue}
+                enterButton="Dodaj"
+                onSearch={() => addChild(formValue)}
+              />
 
-          <List
-            size="large"
-            bordered
-            dataSource={data}
-            renderItem={item => (<List.Item>{item}</List.Item>)}
-          />
+              <List
+                locale={{ emptyText: 'Brak danych' }}
+                size="large"
+                bordered
+                dataSource={Object.values(children.toJS()).sort((a, b) => !(a.entryTime - b.entryTime))}
+                renderItem={(item: ChildType) => (<List.Item>{item.name}</List.Item>)}
+              />
+            </div>
+            <div className="config">
+           dupa
+            </div>
+          </div>
         </div>
       </div>
     );

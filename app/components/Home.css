@@ -1,10 +1,10 @@
 .container {
-  /*background-color: #333;*/
   background: white;
   padding: 10px;
-  width: 600px;
+  max-width: 600px;
   height: 100vh;
   margin: 0 auto;
+  overflow: auto;
 }
 
 .container h2 {
@@ -14,4 +14,8 @@
 
 .container a {
   font-size: 1.4rem;
+}
+
+.add {
+  margin-bottom: 20px !important;
 }
