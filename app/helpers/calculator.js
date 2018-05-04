@@ -1,7 +1,16 @@
 /* eslint-disable no-restricted-globals */
 // @flow
 
-const calculate = (rate: number, firstHourRate: number, minutes: number): number => 666;
+const calculate = (firstHourRate: number, rate: number, minutes: number): number => {
+  if (minutes <= 60) {
+    return firstHourRate;
+  }
+  const halfRate = rate / 2;
+  const ratedMinutes = minutes - 60;
+  const howManyHalfHourPeriods = Math.ceil(ratedMinutes / 30);
+  const halvesCost = howManyHalfHourPeriods * halfRate;
+  return halvesCost + firstHourRate;
+};
 
 const checkValue = (testValue: *, currentValue: number): number => {
   const value = Number(testValue);

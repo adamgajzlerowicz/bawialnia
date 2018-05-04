@@ -45,7 +45,7 @@ class App extends Component<Props, State> {
 
   componentDidMount() {
     this.props.setFormValue('');
-    // this.props.setShowSettings(false);
+    this.props.setShowSettings(false);
     setInterval(() => {
       this.setState({ timer: this.state.timer + 1 });
     }, 1000 * 60);
