@@ -1,6 +1,24 @@
-import { calculate } from '../app/helpers/calculator';
+import { calculate, calculateFullness } from '../app/helpers/calculator';
 
-describe('helpers', () => {
+describe('helpers - calculate fullness', () => {
+  it('should calculate blue', () => {
+    const result = calculateFullness(4, 10);
+    expect(result).toEqual('Processing');
+  });
+
+  it('should calculate red', () => {
+    const result = calculateFullness(4, 4);
+    expect(result).toEqual('Error');
+  });
+
+  it('should calculcate amber', () => {
+    const result = calculateFullness(83, 100);
+    expect(result).toEqual('Warning');
+  });
+});
+
+
+describe('helpers - calculate', () => {
   it('should calculate below first hour', () => {
     const result = calculate(10, 8, 50);
     expect(result).toEqual(10);

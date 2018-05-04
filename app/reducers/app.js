@@ -1,6 +1,6 @@
 // @flow
 
-import type { RecordFactory, RecordOf } from 'immutable';
+import type { RecordFactory } from 'immutable';
 import * as immutable from 'immutable';
 
 type ActionType = 'SET_MAX_CHILDREN' | 'SET_RATE' | 'SET_FIRST_HOUR_RATE' | *;

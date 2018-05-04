@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Input, List, Switch } from 'antd';
+import { Badge, Input, List, Switch } from 'antd';
 import UUID from 'uuid';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
@@ -56,6 +56,7 @@ class App extends Component<Props, State> {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings
       , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate
     } = this.props;
+    console.log(children);
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -74,11 +75,17 @@ class App extends Component<Props, State> {
           />
           <div className={styles.right}>
             <div className={styles.rightInner}>
-              <span>Ustawienia</span>
-              <Switch
-                checked={showSettings}
-                onChange={() => setShowSettings(!showSettings)}
-              />
+              <span>
+                <Badge status="success" text={`${children.size} dzieci`} />
+              </span>
+              <div>
+                <span>Ustawienia: </span>
+                <Switch
+                  size="medium"
+                  checked={showSettings}
+                  onChange={() => setShowSettings(!showSettings)}
+                />
+              </div>
             </div>
           </div>
 
@@ -94,7 +101,9 @@ class App extends Component<Props, State> {
                   <List.Item actions={[<a>Zakoncz pobyt</a>]} className={styles.item}>
                     <List.Item.Meta
                       title={<a href="https://ant.design">{item.name}</a>}
-                      description={`Czas wejścia: ${moment(item.entryTime).format('HH:mm')}`}
+                      description={
+                        <div>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</div>
+                      }
                     />
                   </List.Item>
                 )}
@@ -114,7 +123,7 @@ class App extends Component<Props, State> {
                   />
                 </p>
                 <p className={styles.configItem}>
-                  Stawka
+                  Stawka:
                   <Input
                     className={styles.configInputItem}
                     size="small"
@@ -125,7 +134,7 @@ class App extends Component<Props, State> {
                   />
                 </p>
                 <p className={styles.configItem}>
-                  Startowa stawka
+                  Startowa stawka:
                   <Input
                     className={styles.configInputItem}
                     size="small"

@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable no-restricted-globals,no-mixed-operators */
 // @flow
 
 const calculate = (firstHourRate: number, rate: number, minutes: number): number => {
@@ -26,7 +26,24 @@ const checkValue = (testValue: *, currentValue: number): number => {
   return currentValue;
 };
 
-export {
-  calculate, checkValue
+const calculateFullness = (current, max) => {
+  if (current >= max) {
+    return 'Error';
+  }
+  const eightyPercent = max * 80 / 100;
+  if (current > eightyPercent) {
+    return 'Warning';
+  }
+  return 'Processing';
 };
 
+export {
+  calculate, checkValue, calculateFullness
+};
+
+/*
+100% = max
+80% = current
+
+
+ */
