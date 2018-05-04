@@ -61,7 +61,7 @@ class App extends Component<Props, State> {
     return (
       <div>
         <div className={styles.container} data-tid="container">
-          <h2>Bawialnia</h2>
+          <h2>Chata Małolata</h2>
           <Search
             size="large"
             placeholder="Dodaj"
@@ -147,24 +147,24 @@ class App extends Component<Props, State> {
                   />
                 </p>
                 <p className={styles.configItem}>
-                  Stawka:
-                  <Input
-                    className={styles.configInputItem}
-                    size="small"
-                    value={rate}
-                    onChange={({ target: { value } }: *) =>
-                      setRate(checkValue(value, rate))
-                    }
-                  />
-                </p>
-                <p className={styles.configItem}>
-                  Startowa stawka:
+                  Pierwsza godzina:
                   <Input
                     className={styles.configInputItem}
                     size="small"
                     value={firstHourRate}
                     onChange={({ target: { value } }: *) =>
                       setFirstHourRate(checkValue(value, firstHourRate))
+                    }
+                  />
+                </p>
+                <p className={styles.configItem}>
+                  Dodatkowa godzina:
+                  <Input
+                    className={styles.configInputItem}
+                    size="small"
+                    value={rate}
+                    onChange={({ target: { value } }: *) =>
+                      setRate(checkValue(value, rate))
                     }
                   />
                 </p>
