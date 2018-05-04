@@ -57,6 +57,7 @@ class App extends Component<Props, State> {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings
       , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate, updateChild
     } = this.props;
+    const activeChildren:number = children.filter((child: ChildType) => !child.leaveTime).size;
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -76,7 +77,10 @@ class App extends Component<Props, State> {
           <div className={styles.right}>
             <div className={styles.rightInner}>
               <span>
-                <Badge status={calculateFullness(children.size, maxChildren)} text={`${children.size} dzieci`} />
+                <Badge
+                  status={calculateFullness(activeChildren, maxChildren)}
+                  text={`${activeChildren} dzieci`}
+                />
               </span>
               <div>
                 <span>Ustawienia: </span>
@@ -101,14 +105,18 @@ class App extends Component<Props, State> {
                   (
                     <List.Item
                       actions={[
-                        !item.leaveTime && <a onClick={() => {
-                        updateChild(Object.assign({}, item, {
-                          leaveTime: moment().toISOString()
+                        !item.leaveTime && (
+                          <a
+                            onClick={() => {
+                                updateChild(Object.assign({}, item, {
+                                  leaveTime: moment().toISOString()
                         }));
                       }}
-                        >
+                          >
                           Zakoncz pobyt
-                        </a>]}
+                          </a>
+                        )
+                      ]}
                       className={styles.item}
                     >
                       <List.Item.Meta
