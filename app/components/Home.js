@@ -118,8 +118,10 @@ class App extends Component<Props, State> {
                   <Input
                     className={styles.configInputItem}
                     size="small"
-                    defaultValue={rate}
-                    onChange={setRate}
+                    value={rate}
+                    onChange={({ target: { value } }: *) =>
+                      setRate(checkValue(value, rate))
+                    }
                   />
                 </p>
                 <p className={styles.configItem}>
@@ -127,8 +129,10 @@ class App extends Component<Props, State> {
                   <Input
                     className={styles.configInputItem}
                     size="small"
-                    defaultValue={firstHourRate}
-                    onChange={setFirstHourRate}
+                    value={firstHourRate}
+                    onChange={({ target: { value } }: *) =>
+                      setFirstHourRate(checkValue(value, firstHourRate))
+                    }
                   />
                 </p>
               </div>
