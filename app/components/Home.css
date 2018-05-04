@@ -53,6 +53,7 @@
 }
 .configInputItem {
   width: 40px !important;
+  text-align: right;
 }
 .configItem {
  margin: 0;

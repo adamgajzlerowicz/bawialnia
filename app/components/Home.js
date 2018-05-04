@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import moment from 'moment';
 
+
 import type { AppType } from '../reducers/app';
 import * as app from '../reducers/app';
 import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
+import { calculate } from '../helpers/calculator';
 
 import styles from './Home.css';
 
@@ -25,14 +27,24 @@ type Props = AppType & {
   maxChildren: number
 };
 
+type State = {
+  timer: number
+};
+
 const sort = (a, b) => !(a.entryTime - b.entryTime);
 
-class App extends Component<Props> {
+class App extends Component<Props, State> {
   props: Props;
+  state = {
+    timer: 0
+  };
 
   componentDidMount() {
     this.props.setFormValue('');
     this.props.setShowSettings(false);
+    setInterval(() => {
+      this.setState({ timer: this.state.timer + 1 });
+    }, 1000 * 60);
   }
 
   render() {
@@ -78,7 +90,7 @@ class App extends Component<Props> {
                   <List.Item actions={[<a>Zakoncz pobyt</a>]} className={styles.item}>
                     <List.Item.Meta
                       title={<a href="https://ant.design">{item.name}</a>}
-                      description={item.entryTime}
+                      description={`Czas wejścia: ${moment(item.entryTime).format('HH:mm')}`}
                     />
                   </List.Item>
                 )}
