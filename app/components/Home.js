@@ -73,7 +73,8 @@ class App extends Component<Props, State> {
     } = this.props;
     const activeChildren:number =
       // $FlowFixMe
-      immutable.fromJS(children).filter((child: ChildType) => child.leaveTime).size;
+      immutable.fromJS(children).filter((child: ChildType) => !child.get('leaveTime')).size;
+
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -145,6 +146,7 @@ class App extends Component<Props, State> {
                             <span>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</span>
                             {!item.leaveTime && <span>{' '} Koszt: {calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))} zł</span>}
                             {item.leaveTime && <span>{' '} Zapłacono: {item.cost} zł</span>}
+                            {item.leaveTime && <span>{' '} Czas wyjscia: {moment(item.entryTime).format('HH:mm')}</span>}
                           </div>
                         }
                       />
@@ -190,7 +192,7 @@ class App extends Component<Props, State> {
               </div>
             )}
           </div>
-          {Object.keys(children).length - activeChildren > 0 && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
+          {((Object.keys(children).length - activeChildren) > 0) && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
         </div>
       </div>
     );
