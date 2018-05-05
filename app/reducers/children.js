@@ -3,11 +3,11 @@
 import * as immutable from 'immutable';
 import type { RecordFactory, RecordOf } from 'immutable';
 
-type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'RESET_CHILDREN';
+type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'CLEAR';
 
 const ADD_CHILD:ActionType = 'ADD_CHILD';
 const UPDATE_CHILD:ActionType = 'UPDATE_CHILD';
-const RESET_CHILDREN: ActionType = 'RESET_CHILDREN';
+const CLEAR: ActionType = 'CLEAR';
 
 type ChildType = {
     id: string,
@@ -27,10 +27,9 @@ type ChildrenReducerType = immutable.Map<string, ChildRecordType>;
 
 type actionType = {
     +type: ActionType,
-    +payload: ChildRecordType
+    +payload: ChildRecordType | void
 };
 
-const defaultState: ChildrenReducerType = immutable.Map();
 
 function children(plainState: * = {}, action: actionType) {
   const state: ChildrenReducerType = immutable.Map(plainState);
@@ -39,8 +38,8 @@ function children(plainState: * = {}, action: actionType) {
       return state.set(action.payload.get('id'), action.payload);
     case UPDATE_CHILD:
       return state.set(action.payload.get('id'), action.payload);
-    case RESET_CHILDREN:
-      return defaultState;
+    case CLEAR:
+      return state.filter((child: ChildType) => !child.leaveTime);
     default:
       return state;
   }
@@ -48,12 +47,13 @@ function children(plainState: * = {}, action: actionType) {
 
 const addChild = (data: *) => ({ type: ADD_CHILD, payload: data });
 const updateChild = (data: ChildRecordType) => ({ type: UPDATE_CHILD, payload: data });
+const clearChildren = () => ({ type: CLEAR, payload: null });
 
 const selectChildren = (state: *) => state.children;
 
 
 export {
-  children, addChild, updateChild, selectChildren, Child
+  children, addChild, updateChild, selectChildren, Child, clearChildren
 };
 
 export type {

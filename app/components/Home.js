@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Badge, Input, List, Switch } from 'antd';
+import { Badge, Input, List, Switch, Button } from 'antd';
 import UUID from 'uuid';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
@@ -28,7 +28,8 @@ type Props = AppType & {
   setRate: number => void,
   setFirstHourRate: number => void,
   setMaxChildren: number => void,
-  updateChild: ChildType => void
+  updateChild: ChildType => void,
+  clearChildren: void => void
 };
 
 type State = {
@@ -66,8 +67,8 @@ class App extends Component<Props, State> {
 
   render() {
     const {
-      children, formValue, setFormValue, addChild, setShowSettings, showSettings
-      , firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate, updateChild
+      children, formValue, setFormValue, addChild, setShowSettings, showSettings, clearChildren,
+      firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate, updateChild
     } = this.props;
     const activeChildren:number = children.filter((child: ChildType) => !child.leaveTime).size;
     return (
@@ -130,7 +131,7 @@ class App extends Component<Props, State> {
                           </a>
                         )
                       ]}
-                      className={styles.item}
+                      className={!item.leaveTime && styles.item}
                     >
                       <List.Item.Meta
                         className={item.leaveTime ? 'past' : 'current'}
@@ -185,6 +186,8 @@ class App extends Component<Props, State> {
               </div>
             )}
           </div>
+          <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>
+
         </div>
       </div>
     );
@@ -202,6 +205,7 @@ const mapState = (state: *) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   setFormValue: (data) => dispatch(app.setFormValue(data)),
+  clearChildren: () => dispatch(children.clearChildren()),
   addChild: (data: string) => {
     dispatch(app.setFormValue(''));
     dispatch(children.addChild(new children.Child({
