@@ -62,7 +62,7 @@ class App extends Component<Props, State> {
     this.props.setShowSettings(false);
     setInterval(() => {
       this.setState({ timer: this.state.timer + 1 });
-    }, 1000 * 60);
+    }, 5000);
   }
 
   render() {
@@ -186,8 +186,7 @@ class App extends Component<Props, State> {
               </div>
             )}
           </div>
-          <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>
-
+          {children.size - activeChildren > 0 && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
         </div>
       </div>
     );
