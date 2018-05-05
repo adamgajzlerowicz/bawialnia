@@ -26,7 +26,7 @@ const checkValue = (testValue: *, currentValue: number): number => {
   return currentValue;
 };
 
-const calculateFullness = (current, max) => {
+const calculateFullness = (current: number, max: number) => {
   if (current >= max) {
     return 'error';
   }

@@ -5,11 +5,11 @@ import UUID from 'uuid';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import moment from 'moment';
-
+import * as immutable from 'immutable';
 
 import type { AppType } from '../reducers/app';
 import * as app from '../reducers/app';
-import type { ChildRecordType, ChildrenReducerType, ChildType } from '../reducers/children';
+import type { ChildrenReducerType, ChildType } from '../reducers/children';
 import * as children from '../reducers/children';
 import { calculate, checkValue, calculateFullness } from '../helpers/calculator';
 
@@ -19,9 +19,10 @@ const { Search } = Input;
 
 type Props = AppType & {
   addChild: string => void,
-  updateChild: ChildRecordType => void,
+  updateChild: ChildType => void,
   children: ChildrenReducerType,
   setFormValue: string => void,
+  setShowSettings: boolean => void;
   firstHourRate: number,
   rate: number,
   maxChildren: number,
@@ -36,7 +37,7 @@ type State = {
   timer: number
 };
 
-const sort = (a, b) => {
+const sort = (a: ChildType, b: ChildType) => {
   if (a.leaveTime && !b.leaveTime) {
     return true;
   }
@@ -70,7 +71,9 @@ class App extends Component<Props, State> {
       children, formValue, setFormValue, addChild, setShowSettings, showSettings, clearChildren,
       firstHourRate, rate, maxChildren, setMaxChildren, setRate, setFirstHourRate, updateChild
     } = this.props;
-    const activeChildren:number = children.filter((child: ChildType) => !child.leaveTime).size;
+    const activeChildren:number =
+      // $FlowFixMe
+      immutable.fromJS(children).filter((child: ChildType) => child.leaveTime).size;
     return (
       <div>
         <div className={styles.container} data-tid="container">
@@ -113,7 +116,8 @@ class App extends Component<Props, State> {
                 size="large"
                 bordered
                 className="demo-loadmore-list"
-                dataSource={Object.values(children.toJS()).sort(sort)}
+                // $FlowFixMe
+                dataSource={Object.values(children).sort(sort)}
                 renderItem={(item: ChildType) =>
                   (
                     <List.Item
@@ -186,7 +190,7 @@ class App extends Component<Props, State> {
               </div>
             )}
           </div>
-          {children.size - activeChildren > 0 && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
+          {Object.keys(children).length - activeChildren > 0 && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
         </div>
       </div>
     );
@@ -207,16 +211,16 @@ const mapDispatch = (dispatch: Dispatch) => ({
   clearChildren: () => dispatch(children.clearChildren()),
   addChild: (data: string) => {
     dispatch(app.setFormValue(''));
-    dispatch(children.addChild(new children.Child({
-      id: UUID.v4(), name: data, entryTime: moment().toISOString(), leaveTime: null
-    })));
+    dispatch(children.addChild({
+      id: UUID.v4(), name: data, entryTime: moment().toISOString(), leaveTime: null, cost: null
+    }));
   },
   setShowSettings: (val: boolean) => dispatch(app.setShowSettings(val)),
   setRate: (rate: number) => dispatch(app.setRate(rate)),
   setFirstHourRate: (rate: number) => dispatch(app.setFirstHourRate(rate)),
   setMaxChildren: (children: number) => dispatch(app.setMaxChildren(children)),
   updateChild: (data: ChildType) => {
-    dispatch(children.updateChild(new children.Child(data)));
+    dispatch(children.updateChild(data));
   }
 });
 

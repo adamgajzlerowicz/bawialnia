@@ -1,7 +1,6 @@
 // @flow
 
 import * as immutable from 'immutable';
-import type { RecordFactory, RecordOf } from 'immutable';
 
 type ActionType = 'ADD_CHILD' | 'UPDATE_CHILD' | 'CLEAR';
 
@@ -14,51 +13,52 @@ type ChildType = {
     name: string,
     entryTime: string,
     leaveTime: ?string,
-    cost: number
+    cost: ?number
 };
 
-type ChildRecordType = RecordOf<ChildType>;
 
-const Child:RecordFactory<ChildType> = immutable.Record({
-  id: '', name: '', entryTime: '', leaveTime: null, cost: 0
-});
-
-type ChildrenReducerType = immutable.Map<string, ChildRecordType>;
+type ChildrenReducerType = {[string]: ChildType};
 
 type actionType = {
     +type: ActionType,
-    +payload: ChildRecordType | void
+    +payload: ChildType
 };
 
+const defaultState = {};
 
-function children(plainState: * = {}, action: actionType) {
-  const state: ChildrenReducerType = immutable.Map(plainState);
+function children(state: ChildrenReducerType = defaultState, action: actionType) {
   switch (action.type) {
     case ADD_CHILD:
-      return state.set(action.payload.get('id'), action.payload);
+      return {
+        ...state,
+        [action.payload.id]: action.payload
+      };
     case UPDATE_CHILD:
-      return state.set(action.payload.get('id'), action.payload);
+      return {
+        ...state,
+        [action.payload.id]: action.payload
+      };
     case CLEAR:
-      return state.filter((child: ChildType) => !child.leaveTime);
+      // $FlowFixMe
+      return immutable.fromJS(state).filter((child: *) => !child.get('leaveTime')).toJS();
     default:
       return state;
   }
 }
 
-const addChild = (data: *) => ({ type: ADD_CHILD, payload: data });
-const updateChild = (data: ChildRecordType) => ({ type: UPDATE_CHILD, payload: data });
-const clearChildren = () => ({ type: CLEAR, payload: null });
+const addChild = (data: ChildType) => ({ type: ADD_CHILD, payload: data });
+const updateChild = (data: ChildType) => ({ type: UPDATE_CHILD, payload: data });
+const clearChildren = () => ({ type: CLEAR, payload: {} });
 
 const selectChildren = (state: *) => state.children;
 
 
 export {
-  children, addChild, updateChild, selectChildren, Child, clearChildren
+  children, addChild, updateChild, selectChildren, clearChildren
 };
 
 export type {
   ChildType,
-  ChildRecordType,
   ChildrenReducerType
 };
 
