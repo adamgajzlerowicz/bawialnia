@@ -62,3 +62,14 @@ a:hover {
 .ant-list-item-action a {
     color: #1890ff;
 }
+
+.ant-list-item-action a {
+  color: #1890ff;
+}
+.ant-btn-dashed {
+  width: 100%;
+}
+
+.ant-list-item-meta-title > a, .ant-list-item-meta-title > a:visited  {
+  color: black !important;
+}

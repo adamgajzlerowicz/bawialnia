@@ -39,16 +39,16 @@ type State = {
 
 const sort = (a: ChildType, b: ChildType) => {
   if (a.leaveTime && !b.leaveTime) {
-    return true;
+    return +1;
   }
   if (!a.leaveTime && b.leaveTime) {
-    return false;
+    return -1;
   }
   if (a.leaveTime && b.leaveTime) {
-    return a.leaveTime < b.leaveTime;
+    return a.leaveTime < b.leaveTime ? +1 : -1;
   }
 
-  return a.entryTime < b.entryTime;
+  return a.entryTime < b.entryTime ? +1 : -1;
 };
 
 
@@ -192,7 +192,7 @@ class App extends Component<Props, State> {
               </div>
             )}
           </div>
-          {((Object.keys(children).length - activeChildren) > 0) && <Button type="dashed" onClick={clearChildren}>Wyczyść</Button>}
+          {((Object.keys(children).length - activeChildren) > 0) && <div><Button type="dashed" onClick={clearChildren}>Wyczyść</Button></div>}
         </div>
       </div>
     );
@@ -229,5 +229,5 @@ const mapDispatch = (dispatch: Dispatch) => ({
 const ConnectedApp = connect(mapState, mapDispatch)(App);
 
 export {
-  ConnectedApp as default
+  ConnectedApp as default, App
 };
