@@ -8,8 +8,7 @@
     "react"
   ],
   "plugins": [
-    "add-module-exports",
-    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" } ]
+    "add-module-exports"
   ],
   "env": {
     "production": {

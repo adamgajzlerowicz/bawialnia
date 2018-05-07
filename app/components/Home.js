@@ -140,9 +140,9 @@ class App extends Component<Props, State> {
                     >
                       <List.Item.Meta
                         className={item.leaveTime ? 'past' : 'current'}
-                        title={<a href="https://ant.design">{item.name}</a>}
+                        title={<a href="#">{item.name}</a>}
                         description={
-                          <div >
+                          <div>
                             <span>Czas wejścia: {moment(item.entryTime).format('HH:mm')}</span>
                             {!item.leaveTime && <span>{' '} Koszt: {calculate(firstHourRate, rate, moment().diff(moment(item.entryTime), 'minutes'))} zł</span>}
                             {item.leaveTime && <span>{' '} Zapłacono: {item.cost} zł</span>}
